@@ -1,7 +1,19 @@
 import React, {useState} from 'react';
 import {Keyboard} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {Container, Form, Input, SubmitButton} from './styles';
+import {
+  Container,
+  Form,
+  Input,
+  SubmitButton,
+  List,
+  User,
+  Avatar,
+  Name,
+  Bio,
+  ProfileButton,
+  ProfileButtonText,
+} from './styles';
 import api from '../../services/api';
 
 export default function Main() {
@@ -18,8 +30,8 @@ export default function Main() {
       bio: response.data.bio,
       avatar: response.data.avatar_url,
     };
-    console.tron.log(UserField);
-    setUsers(...Users, data);
+    console.tron.log(data);
+    setUsers([...Users, data]);
     setUserField('');
   }
 
@@ -39,6 +51,21 @@ export default function Main() {
           <Icon name="add" size={20} color="#fff" />
         </SubmitButton>
       </Form>
+      <List
+        showsVerticalScrollIndicator={false}
+        data={Users}
+        keyExtractor={(user) => user.login}
+        renderItem={({item}) => (
+          <User>
+            <Avatar source={{uri: item.avatar}} />
+            <Name>{item.name}</Name>
+            <Bio>{item.bio}</Bio>
+            <ProfileButton onPress={() => {}}>
+              <ProfileButtonText>Ver perfil</ProfileButtonText>
+            </ProfileButton>
+          </User>
+        )}
+      />
     </Container>
   );
 }
