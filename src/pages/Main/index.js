@@ -50,7 +50,10 @@ export default function Main() {
           returnKeyType="send"
           onSubmitEditing={handleSubmit}
         />
-        <SubmitButton loading={IsLoading} onPress={handleSubmit}>
+        <SubmitButton
+          loading={IsLoading}
+          onPress={handleSubmit}
+          enabled={!IsLoading}>
           {IsLoading ? (
             <ActivityIndicator color="#fff " />
           ) : (
