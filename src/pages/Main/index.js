@@ -16,8 +16,8 @@ import {
   ProfileButtonText,
 } from './styles';
 import api from '../../services/api';
-
-export default function Main() {
+import Proptypes from 'prop-types';
+export default function Main({navigation}) {
   const [Users, setUsers] = useState([]);
   const [UserField, setUserField] = useState('');
   const [IsLoading, setIsLoading] = useState(false);
@@ -25,7 +25,6 @@ export default function Main() {
   async function getData() {
     const users = await AsyncStorage.getItem('users');
     if (users) {
-      console.tron.log(users);
       setUsers(JSON.parse(users));
     }
   }
@@ -50,7 +49,9 @@ export default function Main() {
     setUserField('');
     setIsLoading(false);
   }
-
+  function handleNavigate(user) {
+    navigation.navigate('User', {user});
+  }
   return (
     <Container>
       <Form>
@@ -83,7 +84,7 @@ export default function Main() {
             <Avatar source={{uri: item.avatar}} />
             <Name>{item.name}</Name>
             <Bio>{item.bio}</Bio>
-            <ProfileButton onPress={() => {}}>
+            <ProfileButton onPress={() => handleNavigate(item)}>
               <ProfileButtonText>Ver perfil</ProfileButtonText>
             </ProfileButton>
           </User>
