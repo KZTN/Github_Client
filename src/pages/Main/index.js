@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Keyboard, ActivityIndicator} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   Container,
@@ -21,6 +22,18 @@ export default function Main() {
   const [UserField, setUserField] = useState('');
   const [IsLoading, setIsLoading] = useState(false);
 
+  async function getData() {
+    const users = await AsyncStorage.getItem('users');
+    if (users) {
+      console.tron.log(users);
+      setUsers(JSON.parse(users));
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   async function handleSubmit() {
     setIsLoading(true);
     Keyboard.dismiss();
@@ -32,8 +45,8 @@ export default function Main() {
       bio: response.data.bio,
       avatar: response.data.avatar_url,
     };
-    console.tron.log(data);
     setUsers([...Users, data]);
+    await AsyncStorage.setItem('users', JSON.stringify([...Users, data]));
     setUserField('');
     setIsLoading(false);
   }
@@ -79,7 +92,3 @@ export default function Main() {
     </Container>
   );
 }
-
-Main.navigationOptions = {
-  title: 'Olá mundo',
-};
