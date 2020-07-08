@@ -16,7 +16,6 @@ import {
   ProfileButtonText,
 } from './styles';
 import api from '../../services/api';
-import Proptypes from 'prop-types';
 export default function Main({navigation}) {
   const [Users, setUsers] = useState([]);
   const [UserField, setUserField] = useState('');
