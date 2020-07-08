@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Keyboard} from 'react-native';
+import {Keyboard, ActivityIndicator} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   Container,
@@ -19,8 +19,10 @@ import api from '../../services/api';
 export default function Main() {
   const [Users, setUsers] = useState([]);
   const [UserField, setUserField] = useState('');
+  const [IsLoading, setIsLoading] = useState(false);
 
   async function handleSubmit() {
+    setIsLoading(true);
     Keyboard.dismiss();
     const {user} = UserField;
     const response = await api.get(`/users/${user}`);
@@ -33,6 +35,7 @@ export default function Main() {
     console.tron.log(data);
     setUsers([...Users, data]);
     setUserField('');
+    setIsLoading(false);
   }
 
   return (
@@ -47,8 +50,12 @@ export default function Main() {
           returnKeyType="send"
           onSubmitEditing={handleSubmit}
         />
-        <SubmitButton onPress={handleSubmit}>
-          <Icon name="add" size={20} color="#fff" />
+        <SubmitButton loading={IsLoading} onPress={handleSubmit}>
+          {IsLoading ? (
+            <ActivityIndicator color="#fff " />
+          ) : (
+            <Icon name="add" size={20} color="#fff" />
+          )}
         </SubmitButton>
       </Form>
       <List
